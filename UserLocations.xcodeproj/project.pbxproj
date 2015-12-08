@@ -14,6 +14,8 @@
 		5CFAF0381C162E3100D4EC78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CFAF0361C162E3100D4EC78 /* LaunchScreen.storyboard */; };
 		5CFAF0431C162E3200D4EC78 /* UserLocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFAF0421C162E3200D4EC78 /* UserLocationsTests.swift */; };
 		5CFAF04E1C162E3200D4EC78 /* UserLocationsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFAF04D1C162E3200D4EC78 /* UserLocationsUITests.swift */; };
+		5CFAF05C1C176F5B00D4EC78 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CFAF05B1C176F5B00D4EC78 /* MapKit.framework */; };
+		B1F6C9BF3C9A4A972114EE74 /* Pods_UserLocations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED79DF4EBDB7603724EE2833 /* Pods_UserLocations.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5066122D89477AEC0C2FFB19 /* Pods-UserLocations.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UserLocations.release.xcconfig"; path = "Pods/Target Support Files/Pods-UserLocations/Pods-UserLocations.release.xcconfig"; sourceTree = "<group>"; };
 		5CFAF02A1C162E3100D4EC78 /* UserLocations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserLocations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFAF02D1C162E3100D4EC78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5CFAF02F1C162E3100D4EC78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +50,9 @@
 		5CFAF0491C162E3200D4EC78 /* UserLocationsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UserLocationsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFAF04D1C162E3200D4EC78 /* UserLocationsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationsUITests.swift; sourceTree = "<group>"; };
 		5CFAF04F1C162E3200D4EC78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5CFAF05B1C176F5B00D4EC78 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		EC0EC192439963D39C86169A /* Pods-UserLocations.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UserLocations.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UserLocations/Pods-UserLocations.debug.xcconfig"; sourceTree = "<group>"; };
+		ED79DF4EBDB7603724EE2833 /* Pods_UserLocations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UserLocations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CFAF05C1C176F5B00D4EC78 /* MapKit.framework in Frameworks */,
+				B1F6C9BF3C9A4A972114EE74 /* Pods_UserLocations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +82,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17B38243D3C85BBEC9647F88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5CFAF05B1C176F5B00D4EC78 /* MapKit.framework */,
+				ED79DF4EBDB7603724EE2833 /* Pods_UserLocations.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4EB072C987D3FC54AD576DCA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EC0EC192439963D39C86169A /* Pods-UserLocations.debug.xcconfig */,
+				5066122D89477AEC0C2FFB19 /* Pods-UserLocations.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5CFAF0211C162E3100D4EC78 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +107,8 @@
 				5CFAF0411C162E3200D4EC78 /* UserLocationsTests */,
 				5CFAF04C1C162E3200D4EC78 /* UserLocationsUITests */,
 				5CFAF02B1C162E3100D4EC78 /* Products */,
+				4EB072C987D3FC54AD576DCA /* Pods */,
+				17B38243D3C85BBEC9647F88 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CFAF0521C162E3200D4EC78 /* Build configuration list for PBXNativeTarget "UserLocations" */;
 			buildPhases = (
+				972A3661D8F389A9EBED75F3 /* Check Pods Manifest.lock */,
 				5CFAF0261C162E3100D4EC78 /* Sources */,
 				5CFAF0271C162E3100D4EC78 /* Frameworks */,
 				5CFAF0281C162E3100D4EC78 /* Resources */,
+				33A4FFC23AAD0535FD222725 /* Embed Pods Frameworks */,
+				55CA325564BFE7086B8547EF /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,6 +224,11 @@
 				TargetAttributes = {
 					5CFAF0291C162E3100D4EC78 = {
 						CreatedOnToolsVersion = 7.1.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					5CFAF03D1C162E3200D4EC78 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -250,6 +286,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		33A4FFC23AAD0535FD222725 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UserLocations/Pods-UserLocations-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		55CA325564BFE7086B8547EF /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UserLocations/Pods-UserLocations-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		972A3661D8F389A9EBED75F3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5CFAF0261C162E3100D4EC78 /* Sources */ = {
@@ -395,6 +479,7 @@
 		};
 		5CFAF0531C162E3200D4EC78 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC0EC192439963D39C86169A /* Pods-UserLocations.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = UserLocations/Info.plist;
@@ -406,6 +491,7 @@
 		};
 		5CFAF0541C162E3200D4EC78 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5066122D89477AEC0C2FFB19 /* Pods-UserLocations.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = UserLocations/Info.plist;
@@ -482,6 +568,7 @@
 				5CFAF0541C162E3200D4EC78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5CFAF0551C162E3200D4EC78 /* Build configuration list for PBXNativeTarget "UserLocationsTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +577,7 @@
 				5CFAF0571C162E3200D4EC78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5CFAF0581C162E3200D4EC78 /* Build configuration list for PBXNativeTarget "UserLocationsUITests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +586,7 @@
 				5CFAF05A1C162E3200D4EC78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
