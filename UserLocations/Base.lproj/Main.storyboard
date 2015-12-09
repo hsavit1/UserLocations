@@ -25,15 +25,24 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="NM0-kQ-0bp"/>
                                 </connections>
                             </mapView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aai-Ka-gk7">
+                                <rect key="frame" x="276" y="82" width="51" height="31"/>
+                                <animations/>
+                                <connections>
+                                    <action selector="locationEnabled:" destination="BYZ-38-t0r" eventType="valueChanged" id="y7s-4E-9cb"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2rM-GU-2c6" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="1W2-w3-Kfz"/>
                             <constraint firstItem="2rM-GU-2c6" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="BWz-iS-4tF"/>
+                            <constraint firstItem="aai-Ka-gk7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DAJ-wv-mue"/>
                             <constraint firstAttribute="trailingMargin" secondItem="2rM-GU-2c6" secondAttribute="trailing" constant="-20" id="a5D-n3-HJW"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="2rM-GU-2c6" secondAttribute="bottom" id="eSM-j2-svk"/>
                             <constraint firstItem="2rM-GU-2c6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="my7-g2-Bdr"/>
+                            <constraint firstItem="aai-Ka-gk7" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="18" id="zlZ-LG-Bre"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -47,14 +56,11 @@
                                 <action selector="centerLocationButtonPressed:" destination="BYZ-38-t0r" id="ol2-IM-weP"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Zoom Out" id="kDT-FU-p9h">
-                            <connections>
-                                <action selector="zoomOut:" destination="BYZ-38-t0r" id="ge7-D5-ALf"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="locationUpdateSwitch" destination="aai-Ka-gk7" id="OP9-wk-kAk"/>
                         <outlet property="mapView" destination="2rM-GU-2c6" id="ECm-FR-VAR"/>
+                        <outlet property="zoomToFitButton" destination="ycE-yu-vQr" id="eCI-T2-euT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

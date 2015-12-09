@@ -45,10 +45,12 @@ reconnectAttempt - Emitted when attempting to reconnect.
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var locationUpdateSwitch: UISwitch!
+    @IBOutlet weak var zoomToFitButton: UIBarButtonItem!
     
     lazy var locationManager: CLLocationManager! = {
         let manager = CLLocationManager()
-        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.delegate = self
         manager.requestAlwaysAuthorization()
         return manager
@@ -62,22 +64,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationUpdateSwitch.on = false
+        zoomToFitButton.enabled = locationUpdateSwitch.on
+    
         socket.on("connection") {data, ack in
             print("socket connected")
         }
         
         socket.on("removeLocation") { [weak self] data, ack in
-            let location = data.flatMap{ $0 }
+            var location = data.flatMap{ $0 }
             self?.locations.filter{ $0 != location }
             print("removed the location")
         }
         
         socket.on("locationUpdate") { [weak self] data, ack in
-            
-//            let location: MKPointAnnotation? = data.flatMap { $0 }
-//            self?.locations.filter{ $0 != location }
-//            self?.locations.append(location as MKPointAnnotation!)
-//            print("added the location: \(location.c)")
+//            var location = data as MKPointAnnotation!
+//            self!.locations.append(data as MKPointAnnotation!)
+//            print("added the location: \(location?.coordinate)")
         }
         
         self.socket.connect()
@@ -92,11 +95,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.mapView.fitMapViewToAnnotaionList()
     }
     
-    @IBAction func zoomOut(sender: UIBarButtonItem) {
-        
-        //if user location permissions are granted
-//        if self.locationManager.
-            self.mapView.setRegion((MKCoordinateRegionMakeWithDistance((self.locationManager.location?.coordinate)!, 10000000, 10000000)), animated: true)
+    @IBAction func locationEnabled(sender: UISwitch) {
+        if sender.on {
+            locationManager.startUpdatingLocation()
+            zoomToFitButton.enabled = true
+        } else {
+            locationManager.stopUpdatingLocation()
+            zoomToFitButton.enabled = false
+        }
     }
     
     func dropAnnotations(){
@@ -104,6 +110,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+        
+        socket.connect()
         
         //remove the old location from socket
         socket.emit("removeLocation", oldLocation )
@@ -136,17 +144,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
 
 }
-
-//extension Array{
-//    func contains<T:Equatable>(item:T) -> Bool{
-//        for item in self{
-//            if item == element{
-//                return true
-//            }
-//        }
-//        return false
-//    }
-//}
 
 extension MKMapView {
     func fitMapViewToAnnotaionList() -> Void {
