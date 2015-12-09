@@ -54,7 +54,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return manager
     }()
     
-    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/")//, options: [.Log(true), .ForcePolling(true)])
+    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/", options: [.Log(true), .ForcePolling(true)])
     var resetAck:SocketAckEmitter?
 
     var locations = [MKPointAnnotation]()
@@ -66,24 +66,26 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             print("socket connected")
         }
         
-        socket.on("removeLocation") {data, ack in
+        socket.on("removeLocation") { [weak self] data, ack in
+            let location = data.flatMap{ $0 }
+            self?.locations.filter{ $0 != location }
             print("removed the location")
         }
         
-        socket.on("locationUpdate") {data, ack in
-            print("added the location")
+        socket.on("locationUpdate") { [weak self] data, ack in
+            
+//            let location: MKPointAnnotation? = data.flatMap { $0 }
+//            self?.locations.filter{ $0 != location }
+//            self?.locations.append(location as MKPointAnnotation!)
+//            print("added the location: \(location.c)")
         }
         
         self.socket.connect()
         
+        //prints anything that comes from the server
         self.socket.onAny {
             print("Got event: \($0.event), with items: \($0.items)")
         }
-    }
-
-    // MARK:- CLLocationManagerDelegate methods
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
     }
 
     @IBAction func centerLocationButtonPressed(sender: UIBarButtonItem) {
@@ -91,7 +93,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     @IBAction func zoomOut(sender: UIBarButtonItem) {
-        self.mapView.setRegion((MKCoordinateRegionMakeWithDistance((self.locationManager.location?.coordinate)!, 10000000, 10000000)), animated: true)
+        
+        //if user location permissions are granted
+//        if self.locationManager.
+            self.mapView.setRegion((MKCoordinateRegionMakeWithDistance((self.locationManager.location?.coordinate)!, 10000000, 10000000)), animated: true)
     }
     
     func dropAnnotations(){
@@ -101,10 +106,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
         //remove the old location from socket
-        socket.emit("removeLocation", oldLocation.coordinate as! AnyObject)
+        socket.emit("removeLocation", oldLocation )
         
         //add a new location to socket
-        socket.emit("locationUpdate", newLocation.coordinate as! AnyObject)
+        socket.emit("locationUpdate", newLocation)
         
         // Add another annotation to the map.
         let annotation = MKPointAnnotation()
@@ -132,6 +137,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
 }
 
+//extension Array{
+//    func contains<T:Equatable>(item:T) -> Bool{
+//        for item in self{
+//            if item == element{
+//                return true
+//            }
+//        }
+//        return false
+//    }
+//}
 
 extension MKMapView {
     func fitMapViewToAnnotaionList() -> Void {
