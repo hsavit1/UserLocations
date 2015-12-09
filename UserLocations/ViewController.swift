@@ -54,7 +54,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return manager
     }()
     
-    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/", options: [.Log(true), .ForcePolling(true)])
+    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/")//, options: [.Log(true), .ForcePolling(true)])
     var resetAck:SocketAckEmitter?
 
     var locations = [MKPointAnnotation]()
