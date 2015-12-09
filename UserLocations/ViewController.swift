@@ -56,7 +56,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return manager
     }()
     
-    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/", options: [.Log(true), .ForcePolling(true)])
+    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/", options: [.Log(true), .ForcePolling(false)])
     var resetAck:SocketAckEmitter?
 
     var locations = [MKPointAnnotation]()
@@ -64,7 +64,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationUpdateSwitch.on = false
         zoomToFitButton.enabled = locationUpdateSwitch.on
     
         socket.on("connection") {data, ack in
@@ -72,21 +71,37 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
         
         socket.on("removeLocation") { [weak self] data, ack in
-            var location = data.flatMap{ $0 }
-            self?.locations.filter{ $0 != location }
-            print("removed the location")
+            if let location = data[0] as? MKPointAnnotation  {
+//                guard (self?.locations.count > 0)
+//                    else { throw "trying to remove a location that doesnt exist" }
+                
+                if ((self?.locations.count)! - 1) == (self?.locations.filter({ $0 != location }).count) {
+                    self?.mapView.removeAnnotation(location)
+                    print("removed the location")
+                }
+                
+//                self?.socket.emitWithAck("removingLocation", location)(timeoutAfter: 0) {data in
+//                    self?.socket.emit("removed", location)
+//                  ack.with(<#T##items: [AnyObject]##[AnyObject]#>)
+//                }
+
+            }
         }
         
         socket.on("locationUpdate") { [weak self] data, ack in
-//            var location = data as MKPointAnnotation!
-//            self!.locations.append(data as MKPointAnnotation!)
-//            print("added the location: \(location?.coordinate)")
+            if let location = data[0] as? MKPointAnnotation  {
+                self?.locations.append(location)
+                print("added the location: \(location.coordinate)")
+                
+                //now append the location to the map 
+                self?.mapView.addAnnotation(location)
+            }
         }
         
-        self.socket.connect()
+        socket.connect()
         
         //prints anything that comes from the server
-        self.socket.onAny {
+        socket.onAny {
             print("Got event: \($0.event), with items: \($0.items)")
         }
     }
@@ -137,7 +152,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         if UIApplication.sharedApplication().applicationState == .Active {
             mapView.showAnnotations(locations, animated: true)
-            mapView.fitMapViewToAnnotaionList()
+//            mapView.fitMapViewToAnnotaionList()
         } else {
             NSLog("App is currently in the background. New location is at %@", newLocation)
         }
