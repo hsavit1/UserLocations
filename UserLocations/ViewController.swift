@@ -15,47 +15,46 @@ import Foundation
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
-    //UI
     @IBOutlet weak var mapView: MKMapView!
     
-    //Manager
-    let locationManager = CLLocationManager()
-
-    //Socket
-    let socket = SocketIOClient(socketURL: "http://192.196.1.106:3000")//, options: [.Log(true), .ForcePolling(true)])
+    lazy var locationManager: CLLocationManager! = {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+        return manager
+    }()
+    
+    let socket = SocketIOClient(socketURL: "https://fierce-fortress-2845.herokuapp.com/", options: [.Log(true), .ForcePolling(true)])
     var resetAck:SocketAckEmitter?
+
+    var locations = [MKPointAnnotation]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.locationManager.delegate = self
-        self.locationManager.requestAlwaysAuthorization()
-        if CLLocationManager.locationServicesEnabled() {
-            self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            self.locationManager.startUpdatingLocation()
-        }
-        
-        mapView.delegate = self
-
         socket.on("connection") {data, ack in
             print("socket connected")
         }
+        
+        socket.on("removeLocation") {data, ack in
+            print("removed the location")
+        }
+        
+        socket.on("locationUpdate") {data, ack in
+            print("added the location")
+        }
+        
         self.socket.connect()
+        
         self.socket.onAny {
             print("Got event: \($0.event), with items: \($0.items)")
-            //            self.ongoingChat.append(data[0] as! (name: String, time:NSDate, lat:CLLocationDegrees?, lon:CLLocationDegrees?))
-            //            self.tableView.reloadData()
         }
     }
 
     // MARK:- CLLocationManagerDelegate methods
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        
-//        if let location = locations.first as CLLocation? {
-//            mapView.region = MKCoordinateRegionMakeWithDistance(location.coordinate, 3000, 3000)
-//        }
     }
 
     @IBAction func centerLocationButtonPressed(sender: UIBarButtonItem) {
@@ -63,17 +62,47 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     @IBAction func zoomOut(sender: UIBarButtonItem) {
-        
-//        self.mapView.setZoomByDelta(10, animated: true)
         self.mapView.setRegion((MKCoordinateRegionMakeWithDistance((self.locationManager.location?.coordinate)!, 10000000, 10000000)), animated: true)
-
     }
     
     func dropAnnotations(){
         
     }
+    
+    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+        
+        //remove the old location from socket
+        socket.emit("removeLocation", oldLocation.coordinate as! AnyObject)
+        
+        //add a new location to socket
+        socket.emit("locationUpdate", newLocation.coordinate as! AnyObject)
+        
+        // Add another annotation to the map.
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = newLocation.coordinate
+        
+        // Also add to our map so we can remove old values later
+        locations.append(annotation)
+        
+        // Remove values if the array is too big
+        while locations.count > 100 {
+            let annotationToRemove = locations.first!
+            locations.removeAtIndex(0)
+            
+            // Also remove from the map
+            mapView.removeAnnotation(annotationToRemove)
+        }
+        
+        if UIApplication.sharedApplication().applicationState == .Active {
+            mapView.showAnnotations(locations, animated: true)
+            mapView.fitMapViewToAnnotaionList()
+        } else {
+            NSLog("App is currently in the background. New location is at %@", newLocation)
+        }
+    }
 
 }
+
 
 extension MKMapView {
     func fitMapViewToAnnotaionList() -> Void {
@@ -93,18 +122,4 @@ extension MKMapView {
         }
         self.setVisibleMapRect(zoomRect, edgePadding: mapEdgePadding, animated: true)
     }
-    
-//    func setZoomByDelta(delta: Double, animated: Bool) {
-//        var _region = region;
-//        var _span = region.span;
-//        _span.latitudeDelta *= delta;
-//        _span.longitudeDelta *= delta;
-//        
-//        if _span.latitudeDelta < 2000000 && _span.longitudeDelta < 2000000 {
-//            _region.span = _span;
-//        }
-//        
-//        setRegion(_region, animated: animated)
-//    }
-    
 }

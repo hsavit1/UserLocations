@@ -21,6 +21,9 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rM-GU-2c6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="NM0-kQ-0bp"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <animations/>
